@@ -297,7 +297,7 @@ const Projects = () => {
               <span className="tech-tag">JavaScript</span>
             </div>
             <motion.a
-              href="gestortareasv.netlify.app"
+              href="https://gestortareasv.netlify.app/"
               target="_blank"
               rel="noopener noreferrer"
               className="project-link-button"

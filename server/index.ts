@@ -13,33 +13,55 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // --------------------- MIDDLEWARES ---------------------
-// CORS dinámico: reflejamos el origin si coincide con la lista permitida
-const allowedHosts = [
-  "adyavp.github.io",
-  "adyavp.github.io/", // por si acaso
-  "localhost",
-  "127.0.0.1"
-];
+// ✅ Lista estricta de orígenes permitidos (con esquema, todo en minúsculas)
+const allowedOrigins = new Set([
+  "https://adyavp.github.io", // GitHub Pages (usuario)
+  "http://localhost:3000",
+  "http://localhost:5173",
+  "http://127.0.0.1:3000",
+  "http://127.0.0.1:5173",
+]);
 
-app.use(cors({
-  origin: function (origin, callback) {
-    // Si no hay origin (p.ej. requests desde curl o servidores), permitirlo
-    if (!origin) return callback(null, true);
-
-    // Comparamos en minúsculas para evitar problemas de mayúsculas/minúsculas
-    const originLower = origin.toLowerCase();
-
-    // Si el origin contiene alguno de los hosts permitidos, permitirlo
-    const allowed = allowedHosts.some(h => originLower.includes(h));
-    if (allowed) {
-      // callback(null, true) hará que cors refleje exactamente el origin recibido
-      return callback(null, true);
-    }
-
-    // Si no está permitido, devolver error (se puede ajustar según necesites)
-    return callback(new Error("Not allowed by CORS"));
+// ⚠️ Importante: CORS exige coincidencia EXACTA de cadena
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin && allowedOrigins.has(String(origin).toLowerCase())) {
+    // Refleja exactamente el origin que llega
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    // Ayuda a caches/proxies a variar por Origin
+    res.setHeader("Vary", "Origin");
   }
-}));
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET,POST,OPTIONS"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization"
+  );
+  // Si usas cookies entre dominios, activa también:
+  // res.setHeader("Access-Control-Allow-Credentials", "true");
+
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(204); // Preflight OK
+  }
+  next();
+});
+
+// (Opcional) Si prefieres usar la librería cors además del bloque anterior,
+// puedes dejar este cors() simple para casos sin Origin (Postman, etc.)
+app.use(
+  cors({
+    origin: (origin, cb) => {
+      if (!origin) return cb(null, true);
+      const ok = allowedOrigins.has(String(origin).toLowerCase());
+      return ok ? cb(null, true) : cb(new Error("Not allowed by CORS"));
+    },
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    // credentials: true, // solo si usas cookies
+  })
+);
 
 // Parseo JSON
 app.use(bodyParser.json());
@@ -57,15 +79,17 @@ app.post("/send-email", async (req, res) => {
       },
     });
 
+    // ✅ Gmail suele rechazar "from" que no coincide con la cuenta autenticada.
+    // Usa tu propia cuenta en "from" y pon al usuario en "replyTo".
     const mailOptions = {
-      from: email,
+      from: `"Portafolio Web" <${process.env.EMAIL_USER}>`,
       to: process.env.EMAIL_USER,
-      subject: `Nuevo mensaje de ${name}`,
-      text: message,
+      replyTo: email || process.env.EMAIL_USER,
+      subject: `Nuevo mensaje de ${name || "Contacto"}`,
+      text: message || "",
     };
 
     await transporter.sendMail(mailOptions);
-
     res.status(200).json({ success: true, message: "Correo enviado correctamente" });
   } catch (error) {
     console.error("Error enviando correo:", error);
