@@ -18,7 +18,7 @@ const skillIcons = [
   { icon: SiBootstrap, name: "Bootstrap"},
   { icon: FaWordpress, name: "WordPress"},
   { icon: SiOdoo, name: "Odoo"}, 
-  { icon: SiExpress, name: "Express.js"},
+  { icon: SiExpress, name: "Express"},
 ];
 
 const SkillsSection: React.FC = () => {

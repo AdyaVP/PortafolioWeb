@@ -1,15 +1,79 @@
 import { motion, type Variants } from 'framer-motion';
-import React from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
-const Contact = () => {
+type ToastType = 'success' | 'error' | '';
+
+/** PortalToast: renderiza el toast directamente en document.body */
+const PortalToast: React.FC<{ open: boolean; message: string; type: ToastType }> = ({
+  open,
+  message,
+  type,
+}) => {
+  const el = useMemo(() => document.createElement('div'), []);
+
+  useEffect(() => {
+    document.body.appendChild(el);
+    return () => {
+      try {
+        document.body.removeChild(el);
+      } catch {}
+    };
+  }, [el]);
+
+  if (!open) return null;
+
+  const bg = type === 'success' ? '#16a34a' : '#dc2626';
+
+  const ToastBox = (
+    <motion.div
+      initial={{ opacity: 0, y: -12 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -12 }}
+      style={{
+        position: 'fixed',
+        top: 20,
+        right: 20,
+        zIndex: 999999,
+        padding: '12px 16px',
+        borderRadius: 12,
+        color: '#fff',
+        boxShadow: '0 12px 28px rgba(0,0,0,0.22)',
+        background: bg,
+        maxWidth: 420,
+        fontSize: 14,
+        lineHeight: 1.45,
+      }}
+      role="status"
+      aria-live="polite"
+    >
+      {message}
+    </motion.div>
+  );
+
+  return createPortal(ToastBox, el);
+};
+
+const Contact: React.FC = () => {
+  const [toastMsg, setToastMsg] = useState('');
+  const [toastType, setToastType] = useState<ToastType>('');
+  const [toastOpen, setToastOpen] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const hideAfterMs = 4000;
+
+  const showToast = (message: string, type: ToastType) => {
+    setToastMsg(message);
+    setToastType(type);
+    setToastOpen(true);
+    window.clearTimeout((showToast as any)._t);
+    (showToast as any)._t = window.setTimeout(() => setToastOpen(false), hideAfterMs);
+  };
+
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.1,
-      },
+      transition: { staggerChildren: 0.2, delayChildren: 0.1 },
     },
   };
 
@@ -18,54 +82,86 @@ const Contact = () => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        type: 'tween',
-        duration: 0.6,
-        ease: [0.16, 1, 0.3, 1],
-      },
+      transition: { type: 'tween', duration: 0.6, ease: [0.16, 1, 0.3, 1] },
     },
   };
 
-  // FUNCION PARA MANEJAR EL ENVIO
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (submitting) return;
+    setSubmitting(true);
 
     const form = e.currentTarget;
     const formData = {
-      name: (form[0] as HTMLInputElement).value,
-      email: (form[1] as HTMLInputElement).value,
-      message: (form[2] as HTMLTextAreaElement).value,
+      name: (form[0] as HTMLInputElement).value.trim(),
+      email: (form[1] as HTMLInputElement).value.trim(),
+      message: (form[2] as HTMLTextAreaElement).value.trim(),
     };
 
+    if (!formData.name || !formData.email || !formData.message) {
+      showToast('⚠️ Completa todos los campos.', 'error');
+      setSubmitting(false);
+      return;
+    }
+
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 15000);
+
     try {
-      const response = await fetch("https://portafolioweb-0f1h.onrender.com/send-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        'https://portafolioweb-0f1h.onrender.com/api/contact',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          cache: 'no-store',
+          body: JSON.stringify(formData),
+          signal: controller.signal,
+        }
+      );
+
+      clearTimeout(timeout);
+
+      if (!response.ok) {
+        let reason = `${response.status} ${response.statusText}`;
+        try {
+          const body = await response.json();
+          if (body?.message) reason = body.message;
+        } catch {}
+        showToast(`❌ Error del servidor: ${reason}`, 'error');
+        return;
+      }
 
       const data = await response.json();
-      if (data.success) {
-        alert("Correo enviado correctamente");
+      if (data?.success) {
+        showToast('✅ Correo enviado correctamente', 'success');
         form.reset();
       } else {
-        alert("Hubo un error al enviar el correo");
+        showToast('❌ Hubo un error al enviar el correo', 'error');
       }
-    } catch (error) {
-      console.error("Error:", error);
-      alert("Error de conexión con el servidor");
+    } catch (err: any) {
+      clearTimeout(timeout);
+      if (err?.name === 'AbortError') {
+        showToast('⌛ Conexión muy lenta. Inténtalo de nuevo.', 'error');
+      } else {
+        showToast(`⚠️ Error de conexión: ${err?.message || 'desconocido'}`, 'error');
+      }
+    } finally {
+      setSubmitting(false);
     }
   };
 
   return (
     <motion.section
       id="contact"
-      className="contact-section"
+      className="contact-section relative"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
       variants={containerVariants}
     >
+      {/* TOAST */}
+      <PortalToast open={toastOpen} message={toastMsg} type={toastType} />
+
       <div className="contact-content">
         <motion.div className="contact-header" variants={itemVariants}>
           <motion.h2 className="contact-title">Contáctame</motion.h2>
@@ -107,14 +203,14 @@ const Contact = () => {
           </motion.a>
         </motion.div>
 
-        {/*Aquí va el form con el evento */}
+        {/* FORMULARIO */}
         <motion.form className="contact-form" variants={itemVariants} onSubmit={handleSubmit}>
           <motion.div className="form-group">
-            <input type="text" placeholder="Escribe tu nombre" required />
+            <input type="text" placeholder="Escribe tu nombre" required disabled={submitting} />
           </motion.div>
 
           <motion.div className="form-group">
-            <input type="email" placeholder="Escribe tu correo electrónico" required />
+            <input type="email" placeholder="Escribe tu correo electrónico" required disabled={submitting} />
           </motion.div>
 
           <motion.div className="form-group">
@@ -123,16 +219,18 @@ const Contact = () => {
               placeholder="Escribe tu mensaje aquí..."
               rows={6}
               required
+              disabled={submitting}
             />
           </motion.div>
 
           <motion.button
             type="submit"
             className="submit-button"
-            whileHover={{ y: -1, transition: { duration: 0.3 } }}
-            whileTap={{ scale: 0.99 }}
+            whileHover={{ y: submitting ? 0 : -1, transition: { duration: 0.2 } }}
+            whileTap={{ scale: submitting ? 1 : 0.99 }}
+            disabled={submitting}
           >
-            Enviar Mensaje
+            {submitting ? 'Enviando…' : 'Enviar Mensaje'}
           </motion.button>
         </motion.form>
       </div>

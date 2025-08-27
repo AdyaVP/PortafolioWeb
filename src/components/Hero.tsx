@@ -1,6 +1,6 @@
 // src/components/Hero.tsx
 import { motion, type Variants } from 'framer-motion';
-import Valeria from '/public/Valeria.png';
+import Valeria from '../assets/Valeria.png'; // Asegúrate de tener el avatar en esta ruta
 
 
 function Hero() {

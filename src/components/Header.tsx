@@ -1,5 +1,5 @@
 // src/components/Header.tsx
-import logoV from '/public/logoV.png'
+import logoV from '../assets/logoV.png';
 import { motion, type Variants } from 'framer-motion';
 import { useState } from 'react';
 
