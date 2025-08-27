@@ -159,7 +159,7 @@ function Header() {
                 whileHover={{ scale: 1.05, x: 10 }}
                 whileTap={{ scale: 0.95 }}
               >
-                Experience
+                Experiencia
               </motion.a>
             </motion.li>
 
@@ -170,7 +170,7 @@ function Header() {
                 whileHover={{ scale: 1.05, x: 10 }}
                 whileTap={{ scale: 0.95 }}
               >
-                Projects
+                Projectos
               </motion.a>
             </motion.li>
 
@@ -181,7 +181,7 @@ function Header() {
                 whileHover={{ scale: 1.05, x: 10 }}
                 whileTap={{ scale: 0.95 }}
               >
-                Lab
+                Stack
               </motion.a>
             </motion.li>
 
@@ -193,7 +193,7 @@ function Header() {
                 whileHover={{ scale: 1.05, x: 10 }}
                 whileTap={{ scale: 0.95 }}
               >
-                Contact
+                Contacto
               </motion.a>
             </motion.li>
           </motion.ul>
