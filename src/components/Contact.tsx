@@ -152,7 +152,7 @@ const Contact: React.FC = () => {
 
   return (
     <motion.section
-      id="contact"
+      id="contact-section"
       className="contact-section relative"
       initial="hidden"
       whileInView="visible"

@@ -2,7 +2,7 @@ import { motion, type Variants, type Transition } from 'framer-motion';
 
 // ✅ Recomendado: tener las imágenes en src/assets
 // (esto hace que Vite genere URLs correctas aunque publiques en /Portal/)
-const OlaC = new URL('../assets/OlaC.png', import.meta.url).href;
+const OlaC = new URL('../assets/OlaC.png', import.meta.url).href; // sirve el import.meta.url para rutas relativas es decir a este archivo
 const OlaD = new URL('../assets/OlaD.png', import.meta.url).href;
 const BuylistoImage = new URL('../assets/BuylistoImage.png', import.meta.url).href;
 const HondureandoOld = new URL('../assets/HondureandoOld.png', import.meta.url).href;

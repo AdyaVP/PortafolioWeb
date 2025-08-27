@@ -106,7 +106,7 @@ function Header() {
           </motion.li>
 
           <motion.li variants={itemVariants}>
-            <motion.a href="#contact" whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.95 }}>
+            <motion.a href="#contact-section" whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.95 }}>
              Contacto
             </motion.a>
           </motion.li>
