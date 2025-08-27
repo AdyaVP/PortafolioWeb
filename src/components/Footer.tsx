@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import LogoV from '../assets/LogoV.png'; // Asegúrate de tener el logo en esta ruta
+import LogoV from '../assets/logoV.png'; // Asegúrate de tener el logo en esta ruta
 
 const Footer: React.FC = () => {
   const footerVariants = {
