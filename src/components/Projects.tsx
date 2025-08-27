@@ -146,7 +146,7 @@ const Projects = () => {
               variants={imageHover}
               loading="eager"                   // 👈 primera imagen eager
               width={1280} height={720}         // 👈 fija dimensiones para evitar saltos
-             
+              style={{ aspectRatio: '16/9', width: '100%' }}
             />
           </motion.div>
           <div className="project-info">
@@ -193,8 +193,8 @@ const Projects = () => {
               className="project-image"
               variants={imageHover}
               loading="eager"                   // 👈 segunda también eager (above the fold)
-              width={1280} height={720}
-              
+              width={1280} height={800}
+              style={{ aspectRatio: '16/9', width: '100%'}}
             />
           </motion.div>
           <div className="project-info">
@@ -244,7 +244,7 @@ const Projects = () => {
               variants={imageHover}
               loading="lazy"
               width={1280} height={720}
-             
+              style={{ aspectRatio: '16/9', width: '100%' }}
             />
           </motion.div>
           <div className="project-info">
@@ -291,7 +291,7 @@ const Projects = () => {
               variants={imageHover}
               loading="lazy"
               width={1280} height={720}
-              
+              style={{ aspectRatio: '16/9', width: '100%' }}
             />
           </motion.div>
           <div className="project-info">
