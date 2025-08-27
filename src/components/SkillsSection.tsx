@@ -8,13 +8,13 @@ import { SiTypescript, SiTailwindcss, SiBootstrap, SiOdoo, SiExpress } from 'rea
 
 const skillIcons = [
   { icon: FaReact, name: "React" },
-  { icon: FaNodeJs, name: "Node.js" },
+  { icon: FaNodeJs, name: "Node" },
   { icon: FaDocker, name: "Docker" },
   { icon: FaGitAlt, name: "Git" },
   { icon: FaJsSquare, name: "JavaScript" },
   { icon: SiTypescript, name: "TypeScript" },
   { icon: FaFigma, name: "Figma" },
-  { icon: SiTailwindcss, name: "Tailwind CSS"},
+  { icon: SiTailwindcss, name: "Tailwind"},
   { icon: SiBootstrap, name: "Bootstrap"},
   { icon: FaWordpress, name: "WordPress"},
   { icon: SiOdoo, name: "Odoo"}, 

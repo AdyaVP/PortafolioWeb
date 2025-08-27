@@ -23,7 +23,7 @@ const PortalToast: React.FC<{ open: boolean; message: string; type: ToastType }>
 
   if (!open) return null;
 
-  const bg = type === 'success' ? '#16a34a' : '#dc2626';
+  const bg = type === 'success' ? '#4E9F3D' : '#E84545';
 
   const ToastBox = (
     <motion.div
@@ -133,7 +133,7 @@ const Contact: React.FC = () => {
 
       const data = await response.json();
       if (data?.success) {
-        showToast('✅ Correo enviado correctamente', 'success');
+        showToast('Correo enviado correctamente', 'success');
         form.reset();
       } else {
         showToast('❌ Hubo un error al enviar el correo', 'error');

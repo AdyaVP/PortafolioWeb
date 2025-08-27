@@ -151,6 +151,18 @@ function Header() {
           style={{ display: 'block' }}
         >
           <motion.ul>
+           
+          <motion.li variants={itemVariants}>
+              <motion.a
+                href="#experience-section"
+                onClick={closeMenu}
+                whileHover={{ scale: 1.05, x: 10 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Experience
+              </motion.a>
+            </motion.li>
+
             <motion.li variants={itemVariants}>
               <motion.a
                 href="#projects-section"
@@ -161,6 +173,7 @@ function Header() {
                 Projects
               </motion.a>
             </motion.li>
+
             <motion.li variants={itemVariants}>
               <motion.a
                 href="#skills-section"
@@ -171,16 +184,8 @@ function Header() {
                 Lab
               </motion.a>
             </motion.li>
-            <motion.li variants={itemVariants}>
-              <motion.a
-                href="#experience-section"
-                onClick={closeMenu}
-                whileHover={{ scale: 1.05, x: 10 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Experience
-              </motion.a>
-            </motion.li>
+
+            
             <motion.li variants={itemVariants}>
               <motion.a
                 href="#contact-section"

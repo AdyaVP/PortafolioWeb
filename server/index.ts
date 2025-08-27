@@ -6,38 +6,37 @@ const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 
 // Cargamos variables de entorno (.env)
-dotenv.config();
+dotenv.config(); // 
 
 // --------------------- APP ---------------------
-const app = express();
-const PORT = process.env.PORT || 5000;
+const app = express(); // Express App
+const PORT = process.env.PORT || 5000; // Puerto de Render o 5000 local
 
 // --------------------- CORS (simple y seguro) ---------------------
 // Usa coincidencia EXACTA, en minúsculas y con esquema.
 const allowedOrigins = new Set([
   "https://adyavp.github.io",      // producción (GitHub Pages)
   "http://localhost:5173",         // dev Vite
-  "http://localhost:3000",
-  "http://127.0.0.1:5173",
-  "http://127.0.0.1:3000",
+  "http://localhost:3000",         // dev React
+  "http://127.0.0.1:5173",         // dev Vite
+  "http://127.0.0.1:3000",        // dev React
 ]);
 
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  if (origin && allowedOrigins.has(String(origin).toLowerCase())) {
-    res.setHeader("Access-Control-Allow-Origin", origin);
-    res.setHeader("Vary", "Origin");
+app.use((req, res, next) => { // app.use sirve para todos los endpoints y métodos HTTP, req, res, next es el middleware
+  const origin = req.headers.origin; // obtenemos el origen de la petición
+  if (origin && allowedOrigins.has(String(origin).toLowerCase())) { // verificamos si el origen está en la lista de permitidos
+    res.setHeader("Access-Control-Allow-Origin", origin); // permitimos el origen
+    res.setHeader("Vary", "Origin"); // para que caches intermedias manejen bien múltiples orígenes
   }
-  res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS"); // métodos permitidos
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization"); // headers permitidos
   // Importante: permitir credenciales SOLO si usas cookies (aquí no)
-  // res.setHeader("Access-Control-Allow-Credentials", "true");
-  if (req.method === "OPTIONS") return res.sendStatus(204); // preflight OK
+  // res.setHeader("Access-Control-Allow-Credentials", "true"); 
+  if (req.method === "OPTIONS") return res.sendStatus(204); // respuesta rápida para preflight 
   next();
 });
 
 // No dupliques CORS con app.use(cors()) si ya lo manejas arriba.
-// (Si te hace falta para Postman sin Origin, puedes dejarlo, pero sobra.)
 
 // Parseo JSON
 app.use(bodyParser.json());
