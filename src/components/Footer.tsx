@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FaInstagram, FaGithub, FaGoogle } from 'react-icons/fa';
+import LogoV from '/public/logoV.png';
 
 const Footer: React.FC = () => {
   const footerVariants = {
@@ -35,7 +35,7 @@ const Footer: React.FC = () => {
     >
       <div className="footer-content">
         <motion.img 
-          src="/logoV.png" 
+          src={LogoV} 
           alt="Logo" 
           className="footer-logo"
           variants={itemVariants}

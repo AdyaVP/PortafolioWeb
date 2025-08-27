@@ -5,7 +5,7 @@ import Projects from './components/Projects';
 import SkillsSection from './components/SkillsSection';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
-// import { Routes, Route } from 'react-router-dom'; // No longer needed
+
 
 function App() {
   return (

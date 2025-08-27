@@ -1,6 +1,11 @@
-import { motion, type Variants, type Transition, color } from 'framer-motion';
-import OlaC from '/OlaC.png';
-import OlaD from '/OlaD.png';
+import { motion, type Variants, type Transition } from 'framer-motion';
+import OlaC from '/public/OlaC.png';
+import OlaD from '/public/OlaD.png';
+import BuylistoImage from '/public/BuylistoImage.png' 
+import HondureandoOld from '/public/HondureandoOld.png'
+import ClickMarket from '/public/ClickMarket.png'
+import OrganizarTareas from '/public/OrganizarTareas.png'
+
 
 
 /* Transiciones tipadas para evitar el error 2322 */
@@ -153,7 +158,7 @@ const Projects = () => {
         >
           <motion.div className="project-image-container" whileHover="hover">
             <motion.img
-              src="/public/BuylistoImage.png"
+              src={BuylistoImage}
               alt="Project 1"
               className="project-image"
               variants={imageHover}
@@ -193,7 +198,7 @@ const Projects = () => {
         >
           <motion.div className="project-image-container" whileHover="hover">
             <motion.img
-              src="/public/HondureandoOld.png"
+              src={HondureandoOld}
               alt="Project 2"
               className="project-image"
               variants={imageHover}
@@ -236,7 +241,7 @@ const Projects = () => {
         >
           <motion.div className="project-image-container" whileHover="hover">
             <motion.img
-              src="/public/ClickMarket.png"
+              src={ClickMarket}
               alt="Project 3"
               className="project-image"
               variants={imageHover}
@@ -274,7 +279,7 @@ const Projects = () => {
         >
           <motion.div className="project-image-container" whileHover="hover">
             <motion.img
-              src="/public/OrganizarTareas.png"
+              src={OrganizarTareas}
               alt="Project 4"
               className="project-image"
               variants={imageHover}

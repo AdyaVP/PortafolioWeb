@@ -1,5 +1,7 @@
 // src/components/Hero.tsx
-import { color, motion, type Variants } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
+import Valeria from '/public/Valeria.png';
+
 
 function Hero() {
   // Easing equivalente a easeOut
@@ -84,7 +86,7 @@ function Hero() {
             whileHover={{ scale: 1.1, rotate: 5, transition: { duration: 0.25 } }}
             whileTap={{ scale: 0.95 }}
           >
-            <img src="/Valeria.png" alt="Avatar" className="hero-avatar" />
+            <img src={Valeria} alt="Avatar" className="hero-avatar" />
           </motion.div>
 
           <div className="hero-text-container">

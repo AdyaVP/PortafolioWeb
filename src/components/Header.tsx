@@ -1,4 +1,5 @@
 // src/components/Header.tsx
+import logoV from '/public/logoV.png'
 import { motion, type Variants } from 'framer-motion';
 import { useState } from 'react';
 
@@ -76,7 +77,7 @@ function Header() {
     >
       <nav className="nav">
         <motion.img
-          src="/logoV.png"
+          src={logoV}
           alt="Logo"
           className="header-logo"
           variants={logoVariants}
@@ -105,7 +106,7 @@ function Header() {
           </motion.li>
 
           <motion.li variants={itemVariants}>
-            <motion.a href="#contact-section" whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.95 }}>
+            <motion.a href="#contact" whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.95 }}>
              Contacto
             </motion.a>
           </motion.li>
