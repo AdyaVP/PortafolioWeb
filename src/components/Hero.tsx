@@ -103,7 +103,7 @@ function Hero() {
               variants={itemVariants}
               whileHover={{ scale: 1.01, transition: { duration: 0.25 } }}
             >
-              Soy una estudiante apasionada por la tecnología y en constante aprendizaje de nuevas herramientas.<br />
+              Soy una estudiante apasionada por la tecnología, dedicada a aprender y aplicar nuevas herramientas para crear soluciones reales.<br />
             </motion.h5>
 
             <motion.p className="hero-tagline-subtext" variants={itemVariants}>
